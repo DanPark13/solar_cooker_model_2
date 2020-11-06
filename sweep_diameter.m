@@ -1,8 +1,42 @@
 function [TimeToBoil,Diameter] = sweep_diameter(diameterRange, windSpeed,...
     airTemperature, sunlightIntensity)
-%sweep_diameter Summary of this function goes here
-%   Detailed explanation goes here
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+%sweep_diameter Performs a parameter sweep over the diameter of the mirror
+%               of the parabolic solar cooker
+    % TODO: add pot temperature change, add convection, add radiation
+    
+    initialTemperature = 293.15;    % K
+    waterVolume = 2;                % L
+    % pot dimensions refer to inner dimensions
+    potDiameter = 14/100;           % m
+    potThickness = .5/100;          % m
+    potHeight = 14/100;             % m
+    potConductivity = 401;          % thermal conductivity of pot walls (W/(m*K))
+    potSpecificHeat = 380;          % specific heat of water (J/kg*K)
+    waterSpecificHeat = 4186;       % specific heat of water (J/kg*K)
+    waterDensity = 1000;            % kg/m^3
+    
+    potOuterDiameter = potDiameter + 2*potThickness;
+    potOuterHeight = potHeight + 2*potThickness;
+    
+    potRadius = potDiameter/2;
+    waterHeight = waterVolume / (pi*potRadius^2);
+    conductionArea = pi * potDiameter * waterHeight + potRadius^2;
+    
+    convectionArea = 2*pi*(potOuterDiameter/2)^2 + pi*potOuterDiameter*potOuterHeight; 
+    waterMass = waterDensity * waterVolume;
+    initialEnergy = temperatureToEnergy(initialTemperature, waterMass, waterSpecificHeat);
+    
+    timeParams = [0, endTime * 60];   % convert the minutes to seconds
+    
+    [T, U] = ode45(@heatFlow, timeParams, initialEnergy);
+    
+    elapsedTime = T./60;
+    waterTemperature = energyToTemperature(U, waterMass, waterSpecificHeat);
+    potTemperature = energyToTemperature(U, potMass, potSpecificHeat);
+    
+    function dUdt = heatFlow(~, U)
+        deltaTemp = energyToTemperature(U, waterMass, waterSpecificHeat) - airTemperature;
+        dUdt = -cupConductivity * conductionArea / cupThickness * deltaTemp;
+    end
 end
 
