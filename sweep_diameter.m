@@ -28,6 +28,7 @@ function [TimeToBoil,Diameter] = sweep_diameter(diameterRange, windSpeed, airTem
     waterMass = waterDensity * waterVolume;
     initialEnergy = temperatureToEnergy(initialTemperature, waterMass, waterSpecificHeat);
     
+    %% Simulation Parameters
     timeParams = [0, endTime * 60];   % convert the minutes to seconds
     
     %% Simulation 
@@ -41,4 +42,5 @@ function [TimeToBoil,Diameter] = sweep_diameter(diameterRange, windSpeed, airTem
         deltaTemp = energyToTemperature(U, waterMass, waterSpecificHeat) - airTemperature;
         dUdt = -cupConductivity * conductionArea / cupThickness * deltaTemp;
     end
+    
 end
