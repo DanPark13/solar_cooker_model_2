@@ -1,8 +1,9 @@
-function [TimeToBoil,Diameter] = sweep_diameter(diameterRange, windSpeed, airTemperature, sunlightIntensity)
-    %% DESCRIPTION sweep_diameter 
-    % Performs a parameter sweep over the diameter of the mirror of the parabolic solar cooker
+%% DESCRIPTION sweep_diameter 
+% Performs a parameter sweep over the diameter of the mirror of the parabolic solar cooker
 
+function [TimeToBoil,Diameter] = sweep_diameter(diameterRange, windSpeed, airTemperature, sunlightIntensity)
     %% TODO: add pot temperature change, add convection, add radiation
+    
     %% Variables
     initialTemperature = 293.15;    % K
     waterVolume = 2;                % L
