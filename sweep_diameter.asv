@@ -1,7 +1,7 @@
-%% DESCRIPTION sweep_diameter 
-% Performs a parameter sweep over the diameter of the mirror of the parabolic solar cooker
-
 function [TimeToBoil,Diameter] = sweep_diameter(diameterRange, windSpeed, airTemperature, sunlightIntensity)
+    %% DESCRIPTION sweep_diameter 
+    % Performs a parameter sweep over the diameter of the mirror of the parabolic solar cooker
+    
     %% TODO: add pot temperature change, add convection, add radiation
     
     %% Variables
@@ -28,6 +28,7 @@ function [TimeToBoil,Diameter] = sweep_diameter(diameterRange, windSpeed, airTem
     waterMass = waterDensity * waterVolume;
     initialEnergy = temperatureToEnergy(initialTemperature, waterMass, waterSpecificHeat);
     
+    %% Simulation Parameters
     timeParams = [0, endTime * 60];   % convert the minutes to seconds
     
     %% Simulation 
@@ -37,8 +38,21 @@ function [TimeToBoil,Diameter] = sweep_diameter(diameterRange, windSpeed, airTem
     waterTemperature = energyToTemperature(U, waterMass, waterSpecificHeat);
     potTemperature = energyToTemperature(U, potMass, potSpecificHeat);
     
+    % Water Boiling Plotting
+    plot(elapsed_time, waterTemperature, '*-');
+    xlabel('Time (minutes)');
+    ylabel('Temperature (K)');
+    title('Water Boiling Over Time')
+    
+    % Convection Plotting
+    plot(elapsed_time, potTemperature, '*-'); % Add Convection Variables
+    xlabel('Time (minutes)');
+    ylabel('Temperature (K)');
+    title('Water Boiling Over Time')
+    
     function dUdt = heatFlow(~, U)
         deltaTemp = energyToTemperature(U, waterMass, waterSpecificHeat) - airTemperature;
         dUdt = -cupConductivity * conductionArea / cupThickness * deltaTemp;
     end
+    
 end
