@@ -1,4 +1,4 @@
-function [T, U] = single_diameter()
+function [elapsedTime, waterTemperature] = single_diameter()
     %% DESCRIPTION sweep_diameter 
     % Performs a parameter sweep over the diameter of the mirror of the parabolic solar cooker
     
@@ -38,7 +38,7 @@ function [T, U] = single_diameter()
     initialEnergy = temperatureToEnergy(initialTemperature, waterMass, waterSpecificHeat);
     
     %% Simulation Parameters
-    timeParams = [0, 30];   % convert the minutes to seconds
+    timeParams = [0, 30*60];   % convert the minutes to seconds
     
     %% Simulation 
     [T, U] = ode45(@heatFlow, timeParams, initialEnergy);
