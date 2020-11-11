@@ -54,7 +54,7 @@ function [T, waterTemperature, potTemperature, endTime] = single_diameter_v2(pot
     % environment
     initialTemperature = 273.15;    % K
     airTemperature = 243.15;        % K (Himalayas) % to be simulated
-    insolation = 1000;              % W/m^2
+    insolation = 921;              % W/m^2 (solar noon at 28 degrees latitude on January 1)
     convectionCoefficient = 25;     % W/m^2*K, could range from 2-25, depending on wind speed
     
 
