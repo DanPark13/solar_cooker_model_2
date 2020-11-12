@@ -33,7 +33,8 @@ function [T, waterTemperature, potTemperature, endTime] = single_diameter_v2(pot
     
     water = struct(...
         'density', 1,...            % kg/L
-        'specificHeat', 4186);      % J/kg K
+        'specificHeat', 4186,...    % J/kg K
+        'boilingPoint', 352.85);    % K (elevation of 6172 m)
     
     % pot properties
     switch potMaterial
@@ -94,8 +95,8 @@ function [T, waterTemperature, potTemperature, endTime] = single_diameter_v2(pot
     potTemperature = energyToTemperature(U(:,2), potMass, potMaterial.specificHeat);
     
     function [value, isterminal, direction] = eventFunc(~, U)
-        value = (U(1) >= temperatureToEnergy(373.15, waterMass,...
-            water.specificHeat));    % cuts off ode45 when temp is greater than boiling (373.15 K)
+        value = (U(1) >= temperatureToEnergy(water.boilingPoint, waterMass,...
+            water.specificHeat));    % cuts off ode45 when temp is greater than boiling
         isterminal = 1;
         direction = 0;
     end
