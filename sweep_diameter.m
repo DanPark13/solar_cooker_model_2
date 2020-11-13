@@ -30,7 +30,7 @@ function [TimeToBoil,Diameter] = sweep_diameter(diameterRange, windSpeed, airTem
     initialEnergy = temperatureToEnergy(initialTemperature, waterMass, waterSpecificHeat);
     
     %% Simulation Parameters
-    timeParams = [0, endTime * 60];   % convert the minutes to seconds
+    timeParams = [0, 30 * 60];   % convert the minutes to seconds
     
     %% Simulation 
     [T, U] = ode45(@heatFlow, timeParams, initialEnergy);
